@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: adamf
+    password:
+    url: jdbc:postgresql://localhost:5432/pinjam_buku
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 20
+
+  jooq:
+    sql-dialect: org.hibernate.dialect.PostgreSQLDialect

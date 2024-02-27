@@ -1,0 +1,12 @@
+1. user register with role, admin, user, superuser, mute ------------------------------------
+2. login with base64 ------------------------------------------------------------------------
+5. user can change password -----------------------------------------------------------------
+3. user can borrow books, max 3 books -------------------------------------------------------
+4. user must return book, if not user will be mute, (and must pay the punishment(later))
+6. admin can add books ----------------------------------------------------------------------
+7. superuser can do both(idk)
+8. user cannot borrow books before create new address at least 1 address --------------------
+9. user can borrow books if age > 15
+10. max borrow is 2 weeks
+11. user logout active false ----------------------------------------------------------------
+12. user can add address --------------------------------------------------------------------

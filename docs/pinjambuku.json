@@ -1,0 +1,680 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API Pinjam Buku",
+    "description": "API untuk pinjam buku",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "adam": {
+                  "value": {
+                    "name": "Adam Fadhilah Zamzam",
+                    "username": "dazmy",
+                    "password": "password",
+                    "dob": "2012-12-12",
+                    "role": "superuser"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/201"
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "success": {
+                  "value": {
+                    "username": "dazmy",
+                    "password": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "dob": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "authorization": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "name": "Adam Fadhilah Zamzam",
+                      "username": "dazmy",
+                      "dob": "2012-12-12",
+                      "role": "superuser",
+                      "authorization": "am9obkBleGFtcGxlLmNvbTphYmMxMjM="
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/auth/password/reset": {
+      "patch": {
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "oldPassword": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "adam": {
+                  "value": {
+                    "username": "dazmy",
+                    "oldPassword": "password",
+                    "newPassword": "passwordNew"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": 200,
+                      "data": "OK",
+                      "errors": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "tags": ["Auth"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success logout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": 200,
+                      "data": "OK",
+                      "errors": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/current/addresses": {
+      "post": {
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "bandung": {
+                  "value": {
+                    "street": "jalan",
+                    "city": "kota",
+                    "country": "negara"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/201"
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/books": {
+      "post": {
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/booksSchemaRequest"
+              },
+              "examples": {
+                "filosofi teras": {
+                  "value": {
+                    "title": "Filosofi Teras",
+                    "writer": "Henry Manampiring",
+                    "publisher": "Penerbit Buku Kompas",
+                    "page": 320,
+                    "yop": 2019
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/201"
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/accept"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get all books",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/booksSchemaResponse"
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "title": "Filosofi Teras",
+                        "writer": "Henry Manampiring",
+                        "publisher": "Penerbit Buku Kompas",
+                        "page": 320,
+                        "yop": 2019,
+                        "status": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/books/{bookId}": {
+      "get": {
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "required": true,
+            "name": "bookId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "filosofi teras": {
+                "value": 1
+              }
+            }
+          },
+          {
+            "$ref": "#/components/parameters/accept"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get single book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/booksSchemaResponse"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "id": 1,
+                      "title": "Filosofi Teras",
+                      "writer": "Henry Manampiring",
+                      "publisher": "Penerbit Buku Kompas",
+                      "page": 320,
+                      "yop": 2019,
+                      "status": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "required": true,
+            "name": "bookId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "filosofi teras": {
+                "value": 1
+              }
+            }
+          },
+          {
+            "$ref": "#/components/parameters/accept"
+          },
+          {
+            "$ref": "#/components/parameters/content-type"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date_borrow": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "date_return": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "examples": {
+                "borrow": {
+                  "value": {
+                    "date_borrow": "2024-02-02",
+                    "date_return": "2024-02-15"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/201"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "responseCreateSuccessOrFail": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "booksSchemaRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "writer": {
+            "type": "string"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yop": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "booksSchemaResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "writer": {
+            "type": "string"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yop": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "responses": {
+      "201": {
+        "description": "success create entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+            },
+            "examples": {
+              "success": {
+                "value": {
+                  "status": 201,
+                  "data": "OK",
+                  "errors": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "error validation / bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+            },
+            "examples": {
+              "failed": {
+                "value": {
+                  "status": 400,
+                  "data": null,
+                  "errors": "error message (validation error message)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+            },
+            "examples": {
+              "failed": {
+                "value": {
+                  "status": 401,
+                  "data": null,
+                  "errors": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "book bot found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/responseCreateSuccessOrFail"
+            },
+            "examples": {
+              "failed": {
+                "value": {
+                  "status": 404,
+                  "data": null,
+                  "errors": "book not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "accept": {
+        "name": "Accept",
+        "in": "header",
+        "required": true
+      },
+      "content-type": {
+        "name": "Content-Type",
+        "in": "header",
+        "required": true
+      }
+    }
+  }
+}
